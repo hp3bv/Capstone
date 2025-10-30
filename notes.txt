@@ -1,0 +1,23 @@
+Start server run 
+uvicorn main:app --reload
+In terminal under Server directory
+
+To activate venv run
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+then
+& "C:/Users/hunte/OneDrive - University of Missouri/Semester 5/capstone/Capstone/.venv/Scripts/python.exe" "c:/Users/hunte/OneDrive - University of Missouri/Semester 5/capstone/Capstone/src/Server/services/auth_service.py"
+
+pip install -r requirements.txt
+
+{
+  "key" "tequilarocks69",
+  "password": "tequila",
+  "email": "harrisonlehman@gmail.com",
+}
+
+{
+  "success": true,
+  "message": "Successfully logged in",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXF1aWxhcm9ja3M2OSJ9.Lk94eEbBdRhItAS2MDK58iReclGzVosjBvsSwWvEHDo"
+}
+
