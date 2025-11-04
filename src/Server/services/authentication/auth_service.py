@@ -10,8 +10,8 @@ class AuthService:
     def isValidEmail(self, email):
         return bool(re.match(r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$", email))
     
-    def isValidUsername(self, user):
-        return 3 <= len(user) <= 20 and user.isalnum()
+    def isValidUsername(self, username):
+        return 3 <= len(username) <= 20 and username.isalnum()
     
     def isValidPassword(self, password):
         return 3 <= len(password) <= 20 and password.isalnum()
@@ -23,7 +23,7 @@ class AuthService:
     # Success message
     def success(self, username, message):
         token = self.tokenServices.createToken(username)
-        return {"success": True, "message": message, "token": token}
+        return {"success": True, "message": message, "token": token, "username": username}
 
     # Failure message
     def failure(self, message):

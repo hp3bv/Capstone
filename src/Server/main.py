@@ -24,9 +24,12 @@ class SignUpRequest(BaseModel):
     username: str
     password: str
 
-class MessageRequest(BaseModel):
+class MessagePostRequest(BaseModel):
     token: str
     content: str
+
+class MessageGetRequest(BaseModel):
+    token: str
 
 @app.post("/login")
 def login(data: LoginRequest):
@@ -37,14 +40,21 @@ def login(data: LoginRequest):
 
 @app.post("/signup")
 def signup(data: SignUpRequest):
-    result = signUpService.sign_up(data.email, data.username, data.password)
+    result = signUpService.signUp(data.email, data.username, data.password)
     if not result["success"]:
         raise HTTPException(status_code=401, detail=result["message"])
     return result
 
 @app.post("/message")
-def message(data: MessageRequest):
+def postMessage(data: MessagePostRequest):
     result = messageService.publishMessage(data.token, data.content)
+    if not result["success"]:
+        raise HTTPException(status_code=401, detail=result["message"])
+    return result
+
+@app.get("/message")
+def getMessage(data: MessageGetRequest):
+    result = messageService.getMessages(data.token)
     if not result["success"]:
         raise HTTPException(status_code=401, detail=result["message"])
     return result

@@ -1,4 +1,5 @@
 import sqlite3
+from datetime import datetime, timedelta
 from invokers.db.sql_queries import Queries
 
 class DBInvoker:
@@ -15,6 +16,7 @@ class DBInvoker:
         self.conn.commit()
         self.conn.close()
 
+    # Authentication
     def getUserFromEmail(self, email):
         self.cursor.execute(Queries.SELECT_EMAIL, {"email": email})
         return self.cursor.fetchone()
@@ -23,21 +25,32 @@ class DBInvoker:
         self.cursor.execute(Queries.SELECT_USERNAME, {"username": username})
         return self.cursor.fetchone()
 
-    def addUser(self, username, email, password_hash):
+    def addUser(self, username, email, passwordHash):
         self.cursor.execute(
             Queries.ADD_USER,
             {
                 "username": username, 
                 "email": email, 
-                "password_hash": password_hash, 
+                "password_hash": passwordHash, 
                 "role_id": 1
             }
         )
         self.conn.commit()
 
+    # Messages
     def addMessage(self, username, content, group_id=1):
         self.cursor.execute(
             Queries.ADD_MESSAGE,
             {"username": username, "content": content, "group_id": group_id}
         )
+
+        messageId = self.cursor.lastrowid
         self.conn.commit()
+        return messageId
+
+    def getMessages(self):
+        self.cursor.execute(
+            Queries.GET_MESSAGES
+        )
+
+        return self.cursor.fetchall()

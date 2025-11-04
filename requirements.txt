@@ -4,3 +4,5 @@ uvicorn
 customtkinter
 pydantic
 python-jose
+requests
+bcrypt

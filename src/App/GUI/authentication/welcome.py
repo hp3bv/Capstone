@@ -1,10 +1,10 @@
 import customtkinter as ctk
 
-class SignUpScreen(ctk.CTkFrame):
+class WelcomeScreen(ctk.CTkFrame):
     def __init__(self, master, controller):
         super().__init__(master)
         self.controller = controller
-        
+
         # Configure grid to center contents and scale with window
         self.grid_rowconfigure(0, weight=1)   # top spacer
         self.grid_rowconfigure(1, weight=0)   # content row
@@ -18,10 +18,6 @@ class SignUpScreen(ctk.CTkFrame):
         content.grid(row=1, column=1)
 
         # Elements added to center 
-        ctk.CTkLabel(content, text="Sign Up", font=("Arial", 56)).pack(pady=30)
-        ctk.CTkEntry(content, width=300, height=40, placeholder_text="Username").pack(pady=10)
-        ctk.CTkEntry(content, width=300, height=40, placeholder_text="Email").pack(pady=10)
-        ctk.CTkEntry(content, width=300, height=40, placeholder_text="Password", show="*").pack(pady=10)
-
-        ctk.CTkButton(content, width=300, height=40, text="Sign-Up", command=lambda: controller.show_frame("")).pack(pady=20)
-        ctk.CTkButton(content, width=300, height=40, text="Back", command=lambda: controller.show_frame("WelcomeScreen")).pack(pady=5)
+        ctk.CTkLabel(content, text="Welcome!", font=("Arial", 56)).pack(pady=30)
+        ctk.CTkButton(content, text="Log In", width=300, height=40, command=lambda: controller.showFrame("LoginScreen")).pack(pady=10)
+        ctk.CTkButton(content, text="Sign Up", width=300, height=40, command=lambda: controller.showFrame("SignUpScreen")).pack(pady=10)

@@ -2,6 +2,7 @@ import customtkinter as ctk
 from GUI.authentication.welcome import WelcomeScreen
 from GUI.authentication.login import LoginScreen
 from GUI.authentication.sign_up import SignUpScreen
+from GUI.message_board.message_board import MessageBoard
 
 class StudyBuddyApp(ctk.CTk):
     def __init__(self):
@@ -17,13 +18,19 @@ class StudyBuddyApp(ctk.CTk):
         main.grid_columnconfigure(0, weight=1)
         
         self.frames = {}
-        for ScreenClass in (WelcomeScreen, LoginScreen, SignUpScreen):
+        for ScreenClass in (WelcomeScreen, LoginScreen, SignUpScreen, MessageBoard):
             frame = ScreenClass(main, self)
             self.frames[ScreenClass.__name__] = frame
             frame.grid(row=0, column=0, sticky="nsew")
-            
-        self.show_frame("WelcomeScreen")
-        
-    def show_frame(self, name):
+
+        self.userToken = None
+        self.username = None
+
+        self.showFrame("WelcomeScreen")
+
+    def showFrame(self, name):
         frame = self.frames[name]
         frame.tkraise()
+
+        if hasattr(frame, "onShow"):
+            frame.onShow()

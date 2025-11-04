@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS study_group (
     max_size INTEGER,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (course_id) REFERENCES course(course_id),
-    FOREIGN KEY (organizer_username) REFERENCES (username)
+    FOREIGN KEY (organizer_username) REFERENCES user(username)
 );
 """)
 

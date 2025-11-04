@@ -10,13 +10,17 @@ class LoginService(AuthService):
             return self.failure("Password is not valid")
         
         if self.isValidEmail(key):
-            user = self.loginWithEmail(key, password)
-            return self.success(user["username"], "Successfully logged in")
+            response = self.loginWithEmail(key, password)
         elif self.isValidUsername(key):
-            user = self.loginWithUsername(key, password)
-            return self.success(user["username"], "Successfully logged in")
+            response = self.loginWithUsername(key, password)
         else:
-            self.failure("Invalid email or username")
+            return self.failure("Invalid email or username")
+        
+        if response["success"]:
+            return self.success(response["user"]["username"], "Successfully logged in")
+        else:
+            return response
+
 
     def loginWithEmail(self, email, password):
         user = self.retrieveUserFromEmail(email)
@@ -24,10 +28,10 @@ class LoginService(AuthService):
         if not user:
             return self.failure("Email does not exist")
         
-        if not self.checkPassword(password, user["PasswordHash"]):
+        if not self.checkPassword(password, user["password_hash"]):
             return self.failure("Incorrect password")
         
-        return user
+        return {"success": True, "user": user}
         
     def loginWithUsername(self, username, password):
         user = self.retrieveUserFromUsername(username)
@@ -38,7 +42,7 @@ class LoginService(AuthService):
         if not self.checkPassword(password, user["password_hash"]):
             return self.failure("Incorrect password")
         
-        return user
+        return {"success": True, "user": user}
 
     def checkPassword(self, password, hashed):
         return bcrypt.checkpw(password.encode("utf-8"), hashed.encode("utf-8"))

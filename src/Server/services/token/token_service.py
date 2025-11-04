@@ -2,7 +2,7 @@ from jose import jwt, JWTError
 from dotenv import load_dotenv
 import os
 
-load_dotenv("app.env")
+load_dotenv("server.env")
 
 KEY = os.environ.get("KEY")
 if not KEY:

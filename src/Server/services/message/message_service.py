@@ -16,11 +16,23 @@ class MessageService:
         if len(content) > 1000:
             return self.failure("Message is too long")
         
-        self.dbInvoker.addMessage(username, content)
-        return self.success("Successfully published")
+        messageId = self.dbInvoker.addMessage(username, content)
+        return self.successfullyPosted(messageId)
+    
+    def getMessages(self, token):
+        tokenResponse = self.tokenService.validateToken(token)
+
+        if not tokenResponse["valid"]:
+            return self.failure(tokenResponse["message"])
         
-    def success(self, message):
-        return {"success": True, "message": message}
+        messages = self.dbInvoker.getMessages()
+        return self.successfulyRetreived(messages)
+        
+    def successfullyPosted(self, messageId):
+        return {"success": True, "message": "Successfully published", "messageId": messageId}
+    
+    def successfulyRetreived(self, messages):
+        return {"success": True, "messages": messages}
 
     def failure(self, message):
         return {"success": False, "message": message}
