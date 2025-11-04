@@ -1,10 +1,19 @@
 import sqlite3
+import os
+import argparse
 
-# Connect to the SQLite database file (will create it if it doesn't exist)
-conn = sqlite3.connect('group_management.db')
+
+parser = argparse.ArgumentParser(description="Create SQLite database schema.")
+parser.add_argument("-o", "--output", default="group_management.db", help="Path to output database")
+args = parser.parse_args()
+
+os.makedirs(os.path.dirname(args.output) or ".", exist_ok=True)
+conn = sqlite3.connect(args.output)
+
+# Open connection
+conn = sqlite3.connect(args.output)
 cursor = conn.cursor()
 
-# Enable foreign key support
 cursor.execute("PRAGMA foreign_keys = ON;")
 
 # ROLE TABLE

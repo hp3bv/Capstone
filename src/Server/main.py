@@ -1,19 +1,23 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
+from dotenv import load_dotenv
+import os
 
-from services.authentication.login_service import LoginService
-from services.authentication.sign_up_service import SignUpService
-from invokers.db.db_invoker import DBInvoker
-from services.token.token_service import TokenService
-from services.message.message_service import MessageService
+from src.Server.services.authentication.login_service import LoginService
+from src.Server.services.authentication.sign_up_service import SignUpService
+from src.Server.invokers.db.db_invoker import DBInvoker
+from src.Server.services.token.token_service import TokenService
+from src.Server.services.message.message_service import MessageService
+
+dbPath = os.getenv("DB_PATH", "group_management.db")
+dbInvoker = DBInvoker(dbPath)
 
 app = FastAPI()
-dbInvoker = DBInvoker()
+dbInvoker = DBInvoker(dbPath)
 tokenService = TokenService(dbInvoker)
 loginService = LoginService(dbInvoker, tokenService)
 signUpService = SignUpService(dbInvoker, tokenService)
 messageService = MessageService(dbInvoker, tokenService)
-
 # Define how to expect data
 class LoginRequest(BaseModel):
     key: str

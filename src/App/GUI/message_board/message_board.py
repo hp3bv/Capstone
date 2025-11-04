@@ -112,3 +112,6 @@ class MessageBoard(ctk.CTkFrame):
         
     def scrollToBottom(self):
         self.chatArea._parent_canvas.yview_moveto(1.0)
+        
+    def handleEnter(self):
+        self.messagePosted()

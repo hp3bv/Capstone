@@ -1,6 +1,6 @@
 import sqlite3
 from datetime import datetime, timedelta
-from invokers.db.sql_queries import Queries
+from src.Server.invokers.db.sql_queries import Queries
 
 class DBInvoker:
     def __init__(self, db_path="group_management.db"):

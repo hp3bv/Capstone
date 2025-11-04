@@ -1,6 +1,11 @@
 import sqlite3
+import argparse
 
-conn = sqlite3.connect("group_management.db")
+parser = argparse.ArgumentParser(description="Insert initial data into the database.")
+parser.add_argument("-d", "--db", required=True, help="Path to SQLite database")
+args = parser.parse_args()
+
+conn = sqlite3.connect(args.db)
 cursor = conn.cursor()
 
 cursor.execute("INSERT OR IGNORE INTO role (role_name) VALUES ('student');")

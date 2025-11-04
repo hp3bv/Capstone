@@ -72,3 +72,6 @@ class LoginScreen(ctk.CTkFrame):
 
     def hideError(self):
         self.errorLabel.pack_forget()
+        
+    def handleEnter(self):
+        self.handleLogin()

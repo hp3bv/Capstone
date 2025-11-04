@@ -1,8 +1,5 @@
-from dotenv import load_dotenv
 import os
 import requests
-
-load_dotenv("app.env")
 
 SERVER_LINK = os.environ.get("SERVER_LINK")
 if not SERVER_LINK:

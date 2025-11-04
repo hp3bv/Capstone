@@ -1,4 +1,4 @@
-from services.authentication.auth_service import AuthService
+from src.Server.services.authentication.auth_service import AuthService
 
 class SignUpService(AuthService):
     def __init__(self, dbInvoker, tokenServices):

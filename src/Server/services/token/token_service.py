@@ -2,8 +2,6 @@ from jose import jwt, JWTError
 from dotenv import load_dotenv
 import os
 
-load_dotenv("server.env")
-
 KEY = os.environ.get("KEY")
 if not KEY:
     raise ValueError("KEY not set")
