@@ -9,7 +9,7 @@ print(f"Connecting to database at: {db_path}")
 conn = sqlite3.connect(db_path)
 cursor = conn.cursor()
 
-# Check if the 'users' table exists
+# Check if the 'user' table exists
 cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='user';")
 if not cursor.fetchone():
     print("❌ The 'user' table does not exist in this database.")

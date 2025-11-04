@@ -9,3 +9,8 @@ class Queries:
         INSERT INTO message (group_id, username, content)
         VALUES (:group_id, :username, :content)
     """
+    GET_MESSAGES = """
+        SELECT * FROM  message
+        ORDER BY message_date ASC
+        LIMIT 50
+    """
