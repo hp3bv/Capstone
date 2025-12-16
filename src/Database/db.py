@@ -2,9 +2,10 @@ import sqlite3
 import os
 import argparse
 
+db_path = os.getenv("DB_PATH")
 
 parser = argparse.ArgumentParser(description="Create SQLite database schema.")
-parser.add_argument("-o", "--output", default="group_management.db", help="Path to output database")
+parser.add_argument("-o", "--output", default=db_path, help="Path to output database")
 args = parser.parse_args()
 
 os.makedirs(os.path.dirname(args.output) or ".", exist_ok=True)
@@ -24,15 +25,23 @@ CREATE TABLE IF NOT EXISTS role (
 );
 """)
 
+# UNIVERSITY TABLE
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS university (
+    university_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    university_name TEXT
+);
+""")
+
 # USER TABLE
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS user (
     username TEXT PRIMARY KEY,
     email TEXT UNIQUE,
     password_hash TEXT,
-    role_id INTEGER,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (role_id) REFERENCES role(role_id)
+    attends_university INTEGER,
+    FOREIGN KEY (attends_university) REFERENCES university(university_id) ON DELETE SET NULL
 );
 """)
 
@@ -41,7 +50,11 @@ cursor.execute("""
 CREATE TABLE IF NOT EXISTS course (
     course_id INTEGER PRIMARY KEY AUTOINCREMENT,
     course_name TEXT,
-    course_code INTEGER UNIQUE
+    course_code TEXT,
+    course_subject TEXT,
+    course_university_id INTEGER,
+    FOREIGN KEY (course_university_id) REFERENCES university(university_id) ON DELETE CASCADE,
+    UNIQUE (course_code, course_subject, course_university_id)
 );
 """)
 
@@ -54,8 +67,8 @@ CREATE TABLE IF NOT EXISTS study_group (
     organizer_username TEXT,
     max_size INTEGER,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (course_id) REFERENCES course(course_id),
-    FOREIGN KEY (organizer_username) REFERENCES user(username)
+    FOREIGN KEY (course_id) REFERENCES course(course_id) ON DELETE CASCADE,
+    FOREIGN KEY (organizer_username) REFERENCES user(username) ON DELETE CASCADE
 );
 """)
 
@@ -66,9 +79,11 @@ CREATE TABLE IF NOT EXISTS membership (
     group_id INTEGER,
     joined_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     status BOOLEAN DEFAULT 1,
+    role_id INTEGER,
     PRIMARY KEY (username, group_id),
-    FOREIGN KEY (username) REFERENCES user(username),
-    FOREIGN KEY (group_id) REFERENCES study_group(group_id)
+    FOREIGN KEY (username) REFERENCES user(username) ON DELETE CASCADE,
+    FOREIGN KEY (role_id) REFERENCES role(role_id) ON DELETE SET NULL,
+    FOREIGN KEY (group_id) REFERENCES study_group(group_id) ON DELETE CASCADE
 );
 """)
 
@@ -80,8 +95,8 @@ CREATE TABLE IF NOT EXISTS message (
     username TEXT,
     content TEXT,
     message_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (group_id) REFERENCES study_group(group_id),
-    FOREIGN KEY (username) REFERENCES user(username)
+    FOREIGN KEY (group_id) REFERENCES study_group(group_id) ON DELETE CASCADE,
+    FOREIGN KEY (username) REFERENCES user(username) ON DELETE CASCADE
 );
 """)
 
@@ -92,7 +107,7 @@ CREATE TABLE IF NOT EXISTS announcement (
     group_id INTEGER,
     content TEXT,
     announcement_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (group_id) REFERENCES study_group(group_id)
+    FOREIGN KEY (group_id) REFERENCES study_group(group_id) ON DELETE CASCADE
 );
 """)
 
@@ -104,8 +119,8 @@ CREATE TABLE IF NOT EXISTS report (
     reported_username TEXT,
     description TEXT,
     report_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (reporter_username) REFERENCES user(username),
-    FOREIGN KEY (reported_username) REFERENCES user(username)
+    FOREIGN KEY (reporter_username) REFERENCES user(username) ON DELETE CASCADE,
+    FOREIGN KEY (reported_username) REFERENCES user(username) ON DELETE CASCADE
 );
 """)
 
@@ -117,7 +132,7 @@ CREATE TABLE IF NOT EXISTS audit_log (
     action TEXT,
     target_id INTEGER,
     audit_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (username) REFERENCES user(username)
+    FOREIGN KEY (username) REFERENCES user(username) ON DELETE CASCADE
 );
 """)
 

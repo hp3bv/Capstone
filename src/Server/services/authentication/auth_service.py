@@ -1,8 +1,11 @@
+from src.Server.services.token.token_service import TokenService
+from src.Server.invokers.db.db_invoker import DBInvoker
+
 import bcrypt
 import re
 
 class AuthService:
-    def __init__(self, dbInvoker, tokenServivces):
+    def __init__(self, dbInvoker: DBInvoker, tokenServivces: TokenService):
         self.dbInvoker = dbInvoker
         self.tokenServices = tokenServivces
     

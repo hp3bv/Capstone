@@ -15,7 +15,7 @@ echo ""
 cd "$PROJECT_ROOT"
 
 # Specify server
-SERVER_LINK=http://0.0.0.0:8000
+SERVER_LINK=http://127.0.0.1:8000
 export SERVER_LINK
 
 # Start the app

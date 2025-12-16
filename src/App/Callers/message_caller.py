@@ -5,18 +5,20 @@ class MessageCaller(ServerCaller):
         super().__init__()
         self.ext = "/message"
         
-    def send(self, token, content):
+    def send(self, token, groupId, content):
         payload = {
             "token": token,
+            "group_id": groupId,
             "content": content
         }
         
         response = self.postRequest(payload)
         return response
 
-    def getMessages(self, token):
+    def getMessages(self, token, groupId):
         payload = {
-            "token": token
+            "token": token,
+            "group_id": groupId
         }
 
         response = self.getRequest(payload)

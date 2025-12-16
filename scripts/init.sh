@@ -9,6 +9,8 @@ DB_PATH="$PROJECT_ROOT/bin/db/group_management.db"
 DB_SCRIPT="$PROJECT_ROOT/src/Database/db.py"
 INSERT_SCRIPT="$PROJECT_ROOT/src/Database/insert_data.py"
 
+export DB_PATH
+
 echo "=== Capstone Initialization ==="
 echo "Project root: $PROJECT_ROOT"
 echo "Database target: $DB_PATH"

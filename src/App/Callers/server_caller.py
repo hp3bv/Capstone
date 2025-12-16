@@ -18,8 +18,8 @@ class ServerCaller:
         
         return response
         
-    def getRequest(self, body, callback=None):
-        url = SERVER_LINK + self.ext
+    def getRequest(self, body, extAddition="", callback=None):
+        url = SERVER_LINK + self.ext + extAddition
         response = requests.get(url, json=body)
         
         if not response.ok:
