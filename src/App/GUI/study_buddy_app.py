@@ -25,12 +25,21 @@ class StudyBuddyApp(ctk.CTk):
 
         self.userToken = None
         self.username = None
+        
+        self.bind("<Return>", self.handleEnter)
 
+        self.currFrame = None
         self.showFrame("WelcomeScreen")
 
     def showFrame(self, name):
         frame = self.frames[name]
         frame.tkraise()
 
+        self.currFrame = frame
+
         if hasattr(frame, "onShow"):
             frame.onShow()
+            
+    def handleEnter(self, event=None):
+        if hasattr(self.currFrame, "handleEnter"):
+            self.currFrame.handleEnter()

@@ -1,8 +1,11 @@
-from services.authentication.auth_service import AuthService
+from src.Server.services.authentication.auth_service import AuthService
+from src.Server.services.token.token_service import TokenService
+from src.Server.invokers.db.db_invoker import DBInvoker
+
 import bcrypt
 
 class LoginService(AuthService):
-    def __init__(self, dbInvoker, tokenServices):
+    def __init__(self, dbInvoker: DBInvoker, tokenServices: TokenService):
         super().__init__(dbInvoker, tokenServices)
 
     def login(self, key, password):

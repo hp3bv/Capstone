@@ -1,9 +1,9 @@
-from .server_caller import ServerCaller
+from Callers.server_caller import ServerCaller
 
 class SignUpCaller(ServerCaller):
     def __init__(self):
         super().__init__()
-        self.ext = "/signup"
+        self.ext = "/sign_up"
         
     def signUp(self, username, email, password):
         payload = {

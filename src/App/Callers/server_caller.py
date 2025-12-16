@@ -1,8 +1,5 @@
-from dotenv import load_dotenv
 import os
 import requests
-
-load_dotenv("app.env")
 
 SERVER_LINK = os.environ.get("SERVER_LINK")
 if not SERVER_LINK:
@@ -21,8 +18,8 @@ class ServerCaller:
         
         return response
         
-    def getRequest(self, body, callback=None):
-        url = SERVER_LINK + self.ext
+    def getRequest(self, body, extAddition="", callback=None):
+        url = SERVER_LINK + self.ext + extAddition
         response = requests.get(url, json=body)
         
         if not response.ok:

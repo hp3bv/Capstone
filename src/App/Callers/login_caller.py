@@ -1,4 +1,4 @@
-from .server_caller import ServerCaller
+from Callers.server_caller import ServerCaller
 
 class LoginCaller(ServerCaller):
     def __init__(self):
